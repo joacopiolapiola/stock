@@ -9,8 +9,9 @@ CREATE TABLE productos(
 
 CREATE TABLE reporte(
     id INT(9) PRIMARY KEY,
+    precio INT(9),
     producto INT(9),
-    dia TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    dia TIMESTAMP UNIQUE DEFAULT CURRENT_TIMESTAMP,
     entrada INT(9),
     salida INT(9),
     existencia INT(9),
@@ -21,4 +22,8 @@ CREATE TABLE reporte(
 CREATE TABLE vars(
     ganancia FLOAT(5,2)
 );
-a
+
+CREATE TABLE owners(
+nombre VARCHAR(20) PRIMARY KEY,
+pass VARCHAR(60)
+);
