@@ -1,19 +1,20 @@
 # HACER
-
-inicio de sesion
-cargado a la bd
-calculo de ganancia ultima venta por producto
-calculo de ganancia total por producto 
-calculo de cantidad actual por producto
-calculo de ganancia total por prodcto
-creado de mas admins
-toggle modo oscuro
+<ul>
+<li>cargado a la bd</li>
+<li>calculo de ganancia ultima venta por producto</li>
+<li>calculo de ganancia total por producto </li>
+<li>calculo de cantidad actual por producto</li>
+<li>calculo de ganancia total por prodcto</li>
+<li>creado de mas admins</li>
+<li>toggle modo oscuro</li>
 
 todo XD
-
+</ul>
 # ECHO
-
-
+<ul>
+<li>inicio de sesion</li>
+<li>estructura BD</li>
+</ul>
 
 #info
 
