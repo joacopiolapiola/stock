@@ -9,7 +9,7 @@ CREATE TABLE productos(
 );
 
 CREATE TABLE cambios(
-    id INT(9) PRIMARY KEY,
+    id INT PRIMARY KEY,
     producto INT,
     tipo ENUM('compra','venta') NOT NULL,
     cantidad INT,
@@ -33,7 +33,8 @@ pass VARCHAR(90)
 );
 
 CREATE TABLE vars(
-    ganancia FLOAT(5,2)
+    ganancia FLOAT(6,2)
 );
 
 INSERT INTO owners(nombre,pass) VALUES ('joaco','$2y$10$d3OEWQr0cixAcM1rL/sOROTM8p7N9F8hhfbdV8zJ852sFYfCX42Km');
+--123
