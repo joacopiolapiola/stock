@@ -1,0 +1,24 @@
+# Infinityfree .htaccess configuration
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Remove .php extension
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([a-zA-Z0-9_-]+)/?$ $1.php [L]
+    
+    # Prevent access to sensitive files
+    RewriteRule ^(\.env|db\.sql|conexion\.php|config/)$ - [F,L]
+</IfModule>
+
+# Disable directory indexing
+<FilesMatch "^\.">
+    Deny from all
+</FilesMatch>
+
+# Set correct MIME types
+<IfModule mod_mime.c>
+    AddType application/x-httpd-php .php
+    AddType text/css .css
+</IfModule>
