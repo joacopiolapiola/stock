@@ -32,6 +32,10 @@ SMOKEJEANS_DB_PASS=contraseña
 4. Importa `db.sql`:
    - phpMyAdmin → Importar → Selecciona `db.sql`
 
+### Actualizar una instalación existente
+
+Para conservar productos, movimientos y cuentas, **no vuelvas a importar `db.sql`**: ese archivo elimina y crea la base de datos. Selecciona la base ya existente en phpMyAdmin e importa una sola vez `migracion_personal.sql`. La migración agrega las tablas de empleados y ausencias sin modificar los datos actuales.
+
 ## Paso 4: Subir archivos a Infinityfree
 
 ### Opción A: Git (Recomendado)

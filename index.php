@@ -11,6 +11,14 @@ session_set_cookie_params([
 session_start();
 
 require_once "conexion.php";
+require_once "auth.php";
+
+$roles_validos = authRolesValidos();
+$rol_sesion = $_SESSION["admin_rol"] ?? "";
+if (!empty($_SESSION["admin_logged_in"]) && in_array($rol_sesion, $roles_validos, true)) {
+    header("Location: " . authInicioRol($rol_sesion));
+    exit;
+}
 
 $error = "";
 
@@ -27,10 +35,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     } else {
 
-        $sql = "SELECT nombre, pass
-                FROM owners
-                WHERE nombre = :nombre
-                LIMIT 1";
+        $sql = "SELECT u.nombre, u.pass, u.rol, u.empleado_id, e.id AS empleado_vigente
+            FROM owners u
+            LEFT JOIN empleados e ON e.id = u.empleado_id
+            WHERE u.nombre = :nombre
+            LIMIT 1";
 
         $stmt = $pdo->prepare($sql);
 
@@ -38,10 +47,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ":nombre" => $nombre
         ]);
 
-        $admin = $stmt->fetch();
+        $usuario = $stmt->fetch();
 
-        if ($admin) {
-            $stored = $admin["pass"] ?? '';
+        if ($usuario) {
+            $stored = $usuario["pass"] ?? '';
 
             $verified = false;
 
@@ -51,14 +60,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $verified = hash_equals((string)$stored, (string)$password);
             }
 
-            if ($verified) {
-                // Crear una nueva sesión
+            $empleado_vigente = $usuario["rol"] !== "empleado" || $usuario["empleado_vigente"] !== null;
+            if ($verified && $empleado_vigente && in_array($usuario["rol"], $roles_validos, true)) {
                 session_regenerate_id(true);
 
-                $_SESSION["admin_nombre"] = $admin["nombre"];
+                $_SESSION["admin_nombre"] = $usuario["nombre"];
+                $_SESSION["admin_rol"] = $usuario["rol"];
+                $_SESSION["empleado_id"] = $usuario["empleado_id"] === null ? null : (int) $usuario["empleado_id"];
                 $_SESSION["admin_logged_in"] = true;
 
-                header("Location: admin.php");
+                header("Location: " . authInicioRol($usuario["rol"]));
                 exit;
             } else {
                 $error = "Nombre o contraseña incorrectos.";
@@ -78,12 +89,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
-    <title>Login administrador</title>
+    <title>Iniciar sesión</title>
 </head>
 
 <body>
 
-    <h1>Administrador</h1>
+    <h1>Iniciar sesión</h1>
 
     <?php if ($error !== ""): ?>
 
